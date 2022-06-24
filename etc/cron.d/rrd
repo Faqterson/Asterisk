@@ -1,0 +1,1 @@
+0-55/5 * * * * root /var/www/html/admin/rrd/collect.php |/bin/bash > /dev/null 2>&1

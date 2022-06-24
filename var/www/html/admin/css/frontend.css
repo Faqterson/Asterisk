@@ -1,0 +1,25 @@
+#main-container {
+  overflow:auto;
+  background-color:#fff;
+  padding:20px 25px
+}
+
+
+.progressbar-wrap {
+  width:100%;
+  background-color:rgba(153,174,196,0.2)
+}
+.progressbar-wrap 
+.progressbar {
+  text-indent:5px
+}
+.progressbar-wrap 
+.progressbar.green {
+  background-color:#7BCE6C
+}
+.progressbar-wrap 
+.progressbar.orange {
+  background-color:#E3BB80
+}
+.progressbar-wrap 
+.progressbar.red{background-color:#CF6B6B}.reload.spin{-moz-animation:spin 2000ms infinite linear;-webkit-animation:spin 2000ms infinite linear;animation:spin 2000ms infinite linear}@-ms-keyframes spin{from{-ms-transform:rotate(0deg)}to{-ms-transform:rotate(360deg)}}@-moz-keyframes spin{from{-moz-transform:rotate(0deg)}to{-moz-transform:rotate(360deg)}}@-webkit-keyframes spin{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.box#esm-load_average h3{font-weight:normal}body.theme-blue a{color:#99AEC4}body.theme-blue a:hover{color:#a9bbcd;text-decoration:none}body.theme-blue ::-moz-selection{background-color:#7994b1;color:#fafbfc}body.theme-blue ::selection{background-color:#7994b1;color:#fafbfc}body.theme-blue 

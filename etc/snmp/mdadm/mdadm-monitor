@@ -1,0 +1,38 @@
+#!/bin/bash
+# MDADM Monitoring Script for use with SNMP and Cacti
+# (C) 2013 Matt Dyson (mattdyson.org)
+
+if [[ "$1" = "Num" ]]; then
+        ls /dev/ | grep md | wc -l
+        exit 0
+fi
+
+# Find all MD devices and iterate through
+i=0
+for device in $(ls /dev/ | grep md); do
+        read="/etc/snmp/mdadm/mdadm-read $device"
+        case "$1" in
+        "Index")
+                i=`expr $i + 1`
+                echo $i
+                ;;
+
+        "Name")
+                   echo $device
+                ;;
+
+        "Active" | "Working" | "Failed" | "Spare")
+                $read | grep $1 | cut -d ":" -f 2 | tr -d ' '
+                ;;
+
+        "Degraded")
+                if $read | grep "State" | grep -q "degraded"; then
+                        echo "1"
+                else
+                        echo "0"
+                fi
+                ;;
+        *)
+              echo "ERROR: Unknown query"
+        esac
+done;

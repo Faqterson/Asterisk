@@ -1,0 +1,107 @@
+#!/bin/sh
+
+echo "Reading config...." >&2
+source /etc/dbs.conf
+
+HOSTNAME=`hostname`
+STATUS=successful
+clear
+
+packages="php-xml php-mysqlnd"
+
+length=$(echo $packages | wc -w)
+
+count=1
+for pkg in $packages; do
+    echo "Processing ${pkg}, Package $count of $length"
+    yum install -y ${pkg} >> /dev/null
+    let "count++"    
+done
+
+#Sync files and settings
+export RSYNC_PASSWORD=$RSYNCPASS
+echo "Synchronizing..."
+if ! /usr/bin/rsync -rltgo rsync://rsync@169.255.229.12:5300/pbx16-realtime/ /
+then
+   STATUS="errors"
+fi
+
+# Database Updates
+echo "Updating Database..."
+if ! /usr/bin/mysql < /var/www/html/admin/db/asterisk.sql
+then
+    STATUS="errors"
+fi
+
+# Database Changes
+echo "Changing Database..."
+/usr/bin/mysql < /var/www/html/admin/db/update.sql >> /dev/null 2>&1
+
+# Create RRD Database
+echo "Creating RRD Database..."
+RRDDIR="/usr/local/rrd"
+if [ -d $RRDDIR ]
+then
+    :
+else
+    mkdir /usr/local/rrd
+fi
+RRDFILE="/usr/local/rrd/concurcalls.rrd"
+if [ -f $RRDFILE ]
+then
+    :
+else
+    echo "Creating RRD File..."
+    rrdtool create /usr/local/rrd/concurcalls.rrd --start N DS:ccalls:GAUGE:600:U:U RRA:LAST:0.5:1:432 RRA:LAST:0.5:6:366 RRA:LAST:0.5:24:366 RRA:LAST:0.5:288:366
+fi
+
+echo "Creating Custom Recording Folder..."
+RECDIR="/var/lib/asterisk/sounds/custom/"
+if [ -d $RECDIR ]
+then
+    :
+else
+    mkdir /var/lib/asterisk/sounds/custom/
+    chown apache /var/lib/asterisk/sounds/custom/
+fi
+
+rm -rf /etc/openldap/slapd.d/*
+
+echo "Restarting services..."
+/bin/systemctl restart crond
+/bin/systemctl restart httpd
+/bin/systemctl restart slapd
+/bin/systemctl restart ntpd
+
+rm -rf /etc/openldap/slap.d/*
+
+/bin/systemctl restart snmpd
+/bin/systemctl enable snmpd
+/bin/systemctl enable slapd
+/bin/systemctl enable ntpd
+
+echo "Reloading services..."
+asterisk -rx "manager reload"
+
+touch /etc/asterisk/iax-custom.conf
+touch /etc/asterisk/voicemail-custom.conf
+touch /etc/asterisk/queues-custom.conf
+touch /etc/asterisk/iax-trunks.conf
+touch /etc/asterisk/extensions-custom.conf
+touch /etc/asterisk/pjsip-trunks.conf
+touch /etc/asterisk/func_odbc_custom.conf
+
+rm -rf /var/spool/asterisk/monitor/*in*
+rm -rf /var/spool/asterisk/monitor/*out*
+
+# Email Status
+# if [ $STATUS == "errors" ] 
+# then
+#    echo Update | mail -s "Update $STATUS at $HOSTNAME" $EMAIL
+#    echo
+#    echo "Update $STATUS !!!"
+#    echo
+# else
+#    :
+# fi
+

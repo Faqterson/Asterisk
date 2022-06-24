@@ -1,0 +1,225 @@
+# sample configuration for iptables service
+# you can edit this manually or use system-config-firewall
+# please do not ask us to add additional ports/services to this default configuration
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p udp --dport 123 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+
+-A INPUT -s 154.53.54.104/32 -j DROP
+
+-A INPUT -s 169.255.229.12/255.255.255.255 -p udp -m udp --dport 161 -j ACCEPT
+
+-A INPUT -s 10.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p tcp -m tcp --dport 5038 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 10.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 172.0.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p tcp -m tcp --dport 5038 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 172.0.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 172.16.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p tcp -m tcp --dport 5038 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 192.168.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 192.89.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 192.89.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 192.89.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 192.89.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 192.89.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 192.89.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 192.89.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 192.145.139.0/255.255.255.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 192.145.139.0/255.255.255.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 192.145.139.0/255.255.255.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 192.145.139.0/255.255.255.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 192.145.139.0/255.255.255.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 192.145.139.0/255.255.255.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 192.145.139.0/255.255.255.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 169.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p tcp -m tcp --dport 5038 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 169.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 165.0.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 165.0.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 165.0.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 165.0.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 165.0.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 165.0.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 165.0.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 165.49.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 165.49.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 165.49.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 165.49.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 165.49.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 165.49.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 165.49.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 165.73.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 165.73.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 165.73.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 165.73.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 165.73.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 165.73.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 165.73.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 165.255.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 165.255.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 165.255.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 165.255.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 165.255.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 165.255.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 165.255.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 41.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 41.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 41.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 41.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 41.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 41.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 41.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 45.222.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 45.222.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 45.222.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 45.222.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 45.222.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 45.222.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 45.222.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 105.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 105.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 105.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 105.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 105.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 105.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 105.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 102.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 102.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 102.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 102.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 102.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 102.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 102.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 100.117.0.0/255.255.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 100.117.0.0/255.255.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 100.117.0.0/255.255.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 100.117.0.0/255.255.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 100.117.0.0/255.255.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 100.117.0.0/255.255.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 100.117.0.0/255.255.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 156.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 156.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 156.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 156.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 156.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 156.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 156.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 154.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 154.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 154.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 154.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 154.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 154.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 154.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 196.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 196.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 196.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 196.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 196.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 196.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 196.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 197.0.0.0/255.0.0.0 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 197.0.0.0/255.0.0.0 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 197.0.0.0/255.0.0.0 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 197.0.0.0/255.0.0.0 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 197.0.0.0/255.0.0.0 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 197.0.0.0/255.0.0.0 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 197.0.0.0/255.0.0.0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 31.127.88.0/24 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 31.127.88.0/24 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 31.127.88.0/24 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 31.127.88.0/24 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 31.127.88.0/24 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 31.127.88.0/24 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 31.127.88.0/24 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 95.146.152.0/24 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 95.146.152.0/24 -p tcp -m tcp --dport 8080 -j ACCEPT
+-A INPUT -s 95.146.152.0/24 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 95.146.152.0/24 -p tcp -m tcp --dport 389 -j ACCEPT
+-A INPUT -s 95.146.152.0/24 -p tcp -m tcp --dport 4445 -j ACCEPT
+-A INPUT -s 95.146.152.0/24 -p udp -m udp --dport 5060 -j ACCEPT
+-A INPUT -s 95.146.152.0/24 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 216.93.246.120/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 35.185.177.49/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 35.189.7.217/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 35.195.163.239/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 216.93.246.120/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 35.197.16.246/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 35.239.221.102/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 102.133.161.81/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 104.198.91.17/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+
+-A INPUT -s 160.19.36.19/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 160.19.36.19/32 -i eth0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -s 94.17.148.250/32 -i eth0 -p udp -m udp --dport 5060:5061 -j ACCEPT
+-A INPUT -s 94.17.148.250/32 -i eth0 -p udp -m udp --dport 10000:20000 -j ACCEPT
+
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A INPUT -j DROP
+
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -j DROP
+
+# -A INPUT -s 105.0.0.0/255.0.0.0 -p tcp -m tcp --dport  4445 -j ACCEPT
+
+COMMIT
+

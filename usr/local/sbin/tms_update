@@ -1,0 +1,50 @@
+#!/usr/bin/php
+<?php      
+
+function db_query($sqlquery,$data)
+{
+        $con_str = 'DRIVER={MySQL};SERVER=localhost;DATABASE=asterisk';
+        $user = 'root';
+        $pass = '';
+        $con = odbc_connect( $con_str, $user, $pass );
+
+        $sqlrow = array();
+
+        $prep = odbc_prepare($con, $sqlquery);
+        if(!$prep) die("could not prepare statement ".$query_string);
+        $result = odbc_execute($prep, $data);
+
+        While ($tmp = odbc_fetch_array($prep))
+        {
+                array_push($sqlrow, $tmp);
+        }
+        odbc_close($con);
+        return $sqlrow;
+}
+
+$mydate=date("Y-m-d", strtotime(" -3 month"));
+
+//            echo "<br>\n";
+//            echo "<h1>TMS Update: </h1>\n";
+//            echo "<table width=100% bgcolor='lightblue'>\n";               
+//            echo "<th align='left'></th><th align='center'></th><th bgcolor='#33ccff'></th>\n";
+
+            $domesticquery="INSERT INTO trunkcost SELECT         cdr.uniqueid,         cdr.duration,         cdr.billsec,         d.cost,         d.destination_name,         d.planname    FROM cdr         LEFT JOIN trunkcost USING (uniqueid)        LEFT JOIN tarrif_plan AS p ON cdr.dstchannel REGEXP p.trunkname         LEFT JOIN tarrif_rate_domestic AS d ON cdr.dst REGEXP d.areacode     WHERE         trunkcost.uniqueid is null AND        trunkname is not null and         (p.planname = d.planname) and         disposition = 'ANSWERED' AND dcontext != 'inbound' and calldate > '$mydate'  group by uniqueid";
+//            $internquery="INSERT INTO trunkcost SELECT         uniqueid,         duration,         billsec,         cost,         destination_name,         planname     from        (SELECT            cdr.uniqueid,           cdr.duration,           cdr.billsec,            i.cost,           i.destination_name,           i.planname         FROM cdr           LEFT JOIN trunkcost USING (uniqueid)           LEFT JOIN tarrif_plan AS p ON cdr.dstchannel REGEXP p.trunkname            LEFT JOIN tarrif_rate_int as i ON (i.areacode = substr(cdr.dst,3,length(i.areacode)))         WHERE            trunkcost.uniqueid is null AND           (p.planname = i.planname) and            cdr.dstchannel != '' AND            cdr.dst REGEXP '^00' AND           disposition = 'ANSWERED'   and dcontext != 'inbound'  and calldate > '$mydate'   ORDER BY length(i.areacode) DESC) d      group by uniqueid";
+
+            $domrow = db_query($domesticquery, array());
+            if (!$domrow) {
+//               echo "CDR Import Invalid: " . mysql_error() . "<br>";
+            }  else {
+//               echo "CDR Successfull<br>";
+            } 
+//            $introw = db_query($internquery, array());
+//            if (!$introw) {
+//               echo "CDR Import Invalid: " . mysql_error() . "<br>";
+//            }  else {
+//               echo "CDR Successfull<br>";
+//            } 
+              
+//            echo "</table>";
+?>
+

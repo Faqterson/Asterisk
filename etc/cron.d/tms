@@ -1,0 +1,3 @@
+# Update System
+*/15 * * * *	root            /usr/local/sbin/tms_update >> /dev/null 2>&1
+

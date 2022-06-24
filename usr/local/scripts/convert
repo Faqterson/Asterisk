@@ -1,0 +1,30 @@
+#!/bin/sh
+UNIQUEID=$1
+
+if [ -z "$UNIQUEID" ]
+then
+    echo "No file specified"
+    exit
+fi
+
+# Generate date
+EPOCH=${UNIQUEID%%.*}
+DATE=`date +%F -d @$EPOCH`
+
+# Check for date
+if [ -z "$DATE" ]
+then
+    echo "Date incorrect"
+    exit
+fi
+
+if [ -f "/var/spool/asterisk/monitor/$UNIQUEID.wav" ]
+then
+    mkdir /var/spool/asterisk/monitor/$DATE
+    /bin/nice -n 15 /usr/bin/sox /var/spool/asterisk/monitor/$UNIQUEID.wav -e gsm-full-rate /var/spool/asterisk/monitor/$DATE/$UNIQUEID.WAV
+
+    rm /var/spool/asterisk/monitor/$UNIQUEID.wav
+else
+    echo "File not found"
+fi
+

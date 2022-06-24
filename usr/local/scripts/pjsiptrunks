@@ -1,0 +1,26 @@
+#!/usr/bin/perl -w
+use DBI;
+
+$dsn = "DBI:mysql:database=asterisk;host=127.0.0.1";
+$dbh->disconnect() if $dbh;
+$dbh = DBI->connect($dsn, 'root', '');
+
+$sth = $dbh->prepare("select ps_auths.id,server_uri,client_uri from ps_auths LEFT JOIN ps_registrations USING (id) WHERE server_uri is not NULL");
+$sth->execute();
+$sth->bind_columns(\$id, \$server_uri, \$client_uri);
+
+open(CALL, ">/etc/asterisk/pjsip-trunks.conf");
+
+while($sth->fetch())
+{
+        print CALL"\n[$id]\n";
+        print CALL"type=registration\n";
+        print CALL"outbound_auth=$id\n";
+        print CALL"server_uri=$server_uri\n";
+        print CALL"client_uri=$client_uri\n";
+        print CALL"retry_interval=60\n";
+}
+$sth->finish();
+
+$dbh->disconnect();
+

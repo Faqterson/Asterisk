@@ -1,0 +1,11 @@
+# Reset Asterisk queue stats
+0 0 * * *	root            /usr/sbin/asterisk -rx "queue reload all" >> /dev/null 2>&1
+
+# Update System
+0 1 * * *	root            /usr/local/scripts/update-pbx >> /dev/null 2>&1
+
+# Update System
+*/15 * * * *	root            /usr/local/scripts/ddns >> /dev/null 2>&1
+
+# Reset Asterisk queue stats
+0 4 * * *	root            /usr/sbin/asterisk -rx "module reload" >> /dev/null 2>&1

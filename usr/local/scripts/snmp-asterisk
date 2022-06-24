@@ -1,0 +1,5 @@
+#!/bin/bash
+
+version=`asterisk -V`
+echo $version;
+

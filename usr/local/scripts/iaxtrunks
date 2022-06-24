@@ -1,0 +1,41 @@
+#!/usr/bin/perl -w
+use DBI;
+
+$dsn = "DBI:mysql:database=asterisk;host=127.0.0.1";
+$dbh->disconnect() if $dbh;
+$dbh = DBI->connect($dsn, 'root', '');
+
+$sth = $dbh->prepare("SELECT name,username,secret,host,type,qualify,trunk,disallow,allow,context FROM iaxfriends");
+$sth->execute();
+$sth->bind_columns(\$name, \$username, \$secret, \$host, \$type, \$qualify, \$trunk, \$disallow, \$allow, \$context);
+
+open(CALL, ">/etc/asterisk/iax-trunks.conf");
+
+while($sth->fetch())
+{
+        print CALL"register => $username:$secret\@$host\n";
+}
+$sth->finish();
+
+$sth->execute();
+$sth->bind_columns(\$name, \$username, \$secret, \$host, \$type, \$qualify, \$trunk, \$disallow, \$allow, \$context);
+
+while($sth->fetch())
+{
+        print CALL"\n[$name]\n";
+        print CALL"forcejitterbuffer=yes\n";
+        print CALL"jitterbuffer=yes\n";
+        print CALL"username=$username\n";
+        print CALL"secret=$secret\n";
+        print CALL"type=$type\n";
+        print CALL"host=$host\n";
+        print CALL"context=$context\n";
+        print CALL"qualify=$qualify\n";
+        print CALL"trunk=$trunk\n";
+        print CALL"disallow=$disallow\n";
+        print CALL"allow=$allow\n";
+}
+close(CALL);
+$sth->finish();
+$dbh->disconnect();
+

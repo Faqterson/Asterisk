@@ -1,0 +1,35 @@
+#!/bin/sh
+
+FILE=$1
+
+# Check for file id
+if [ -z "$FILE" ]
+then
+    echo "No Recroding specified"
+    exit
+fi
+
+RECORD=$(echo $FILE |cut -d "." -f 1)
+TYPE=$(echo $FILE |cut -d "." -f 2)
+
+echo $RECORD;
+
+# Check if file exists
+if [ -f "$FILE" ]
+then
+    case "$TYPE" in
+               wav)
+                 sox $RECORD.wav -r 8000 -c 1 $RECORD2.wav
+                 mv -f $RECORD2.wav $RECORD.wav
+                 ;;
+               mp3)
+                 mpg123 -w $RECORD.wav $RECORD.mp3
+                 sox $RECORD.wav -r 8000 -c 1 $RECORD2.wav
+                 mv -f $RECORD2.wav $RECORD.wav
+                 rm -f $RECORD.mp3
+                 ;;
+    esac
+else
+    echo "File not found"
+    exit
+fi

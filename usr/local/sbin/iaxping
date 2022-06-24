@@ -1,0 +1,68 @@
+#!/usr/bin/perl -w
+
+use IO::Socket;
+use Time::HiRes;
+
+$target = shift;
+$target_port = 4569;
+
+if( ! $target )
+{
+    print "Usage: iaxping destination\n";
+    exit;
+}
+
+socket(PING, PF_INET, SOCK_DGRAM, getprotobyname("udp"));
+
+$src_call = "8000";
+$dst_call = "0000";
+$timestamp = "00000000";
+$outbound_seq = "00";
+$inbound_seq = "00";
+$type = "06"; #IAX_Control
+$iax_type = "1e"; #POKE
+
+
+$MAXLEN = 1024;
+$TIMEOUT = 1;
+
+while(1)
+{
+
+    $msg = pack "H24", $src_call . $dst_call . $timestamp . $outbound_seq . $inbound_seq . $type . $iax_type;
+    
+    $ipaddr = inet_aton($target);
+    $sendto = sockaddr_in($target_port,$ipaddr);
+        
+    send(PING, $msg, 0, $sendto) == length($msg) or die "cannot send to $target : $target_port : $!\n";
+    
+    $start = [ Time::HiRes::gettimeofday( ) ];
+    
+    eval {
+        local $SIG{ALRM} = sub { die "alarm time out"; };
+        alarm $TIMEOUT;
+    
+        $recvfrom = recv(PING, $msg, $MAXLEN, 0) or die "recv: $!";
+        ($port, $ipaddr) = sockaddr_in($recvfrom);
+        $port = $port;
+        $respaddr = inet_ntoa($ipaddr);
+    };
+    
+    my $elapsed = Time::HiRes::tv_interval( $start );
+    $elapsed = sprintf("%.3f", $elapsed * 1000);
+    
+    if( $elapsed < 100 )
+    {
+	print "IAX reply from $respaddr time $elapsed ms\n";
+    }
+    elsif( $elapsed < 1000)
+    {
+	print "IAX reply from $respaddr time $elapsed ms (BAD)\n";
+    }
+    else
+    {
+	print "IAX reply from $respaddr packet timeout (BAD)\n";
+    }
+    
+    Time::HiRes::usleep(50000);
+}

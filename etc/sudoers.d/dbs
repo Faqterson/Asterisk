@@ -1,0 +1,4 @@
+apache ALL=(ALL:ALL) NOPASSWD: /usr/local/scripts/pjsiptrunks
+apache ALL=(ALL:ALL) NOPASSWD: /usr/local/scripts/iaxtrunks
+apache ALL=(ALL:ALL) NOPASSWD: /usr/local/scripts/audioconvert
+

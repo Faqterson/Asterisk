@@ -1,0 +1,1 @@
+/sbin/mdadm --detail "/dev/$1"

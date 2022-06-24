@@ -1,0 +1,26 @@
+#!/bin/sh
+
+REMOTE=$1
+
+/usr/bin/mysqldump asterisk --ignore-table=asterisk.queue_log --ignore-table=asterisk.cel > /tmp/asterisk.sql
+
+cd /
+BFILE=/tmp/$HOSTNAME.tar
+
+SYSFILES="etc/asterisk/*custom* \
+          etc/asterisk/musiconhold.conf \
+          var/lib/asterisk/sounds/custom/ \
+          var/lib/asterisk/moh/ \
+          tmp/asterisk.sql \
+          var/lib/asterisk/licenses/ \
+          etc/sysconfig/network-scripts/ifcfg-*"
+
+/bin/touch $BFILE
+/bin/chmod 600 $BFILE
+/bin/tar -cf ${BFILE} ${SYSFILES}
+
+rsync -ave ssh /tmp/$HOSTNAME.tar    root@$REMOTE:/root/vms/
+
+rm /tmp/asterisk.sql
+rm /tmp/$HOSTNAME.tar
+

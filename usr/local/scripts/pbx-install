@@ -1,0 +1,31 @@
+#!/bin/sh
+
+rm -rf /usr/src/asterisk*
+
+cd /usr/src/
+git clone https://github.com/akheron/jansson.git
+cd jansson
+autoreconf  -i
+./configure --prefix=/usr/
+make
+make install
+
+cd /usr/src/
+tar xvfz /usr/local/scripts/asterisk-16-current.tar.gz
+rm -f asterisk-16-current.tar.gz
+cd asterisk-*
+./configure --libdir=/usr/lib64 --with-jansson-bundled
+contrib/scripts/get_mp3_source.sh
+make
+make menuselect.makeopts
+menuselect/menuselect --enable format_mp3 --disable chan_sip --disable chan_skinny --enable res_config_mysql menuselect.makeopts
+make install
+make samples
+make config
+cd
+
+systemctl enable asterisk
+systemctl start asterisk
+systemctl disable rc-local
+
+/usr/local/scripts/update-pbx

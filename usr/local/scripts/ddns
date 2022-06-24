@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Get name for server
+HOST=`hostname |awk -F. '{print $1}'`
+DOMAIN=`hostname |awk -F. '{print $2}'`
+SERVER=$HOST.$DOMAIN
+echo "HOST: $SERVER.ddns.desktop-ns.co.za"
+
+# Get New IP address
+NEWIPADDR=`wget -qO- myip.desktop-ns.co.za`
+echo "NEW IP: $NEWIPADDR"
+
+# Update DDNS record
+cat <<EOF | nsupdate -y ddns.desktop-ns.co.za.:VGU6NFhhlB9v14IGyliaX2cFmc0RvvDaleOG1j0zB7n16tJ6lnPBb/rK93WnAKlNm5bGnegcDeDySJJQNBs3IQ==
+server ns3.desktop-ns.co.za
+zone ddns.desktop-ns.co.za
+update delete $SERVER.ddns.desktop-ns.co.za
+update add $SERVER.ddns.desktop-ns.co.za 60 A $NEWIPADDR
+send
+EOF
